@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.socialmediaapp.models.Post
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.installations.Utils
 
 
@@ -25,8 +27,8 @@ class PostAdapter(options: FirestoreRecyclerOptions<Post>) : FirestoreRecyclerAd
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-
-        return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false))
+        val viewHolder =  PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false))
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int, model: Post) {
@@ -34,6 +36,10 @@ class PostAdapter(options: FirestoreRecyclerOptions<Post>) : FirestoreRecyclerAd
         holder.userText.text = model.createdBy.displayName
         Glide.with(holder.userImage.context).load(model.createdBy.imageUrl).circleCrop().into(holder.userImage)
         holder.likeCount.text = model.likedBy.size.toString()
-        holder.createdAt.text = Utils.getTimeAgo(model.createdAt)
+        holder.createdAt.text = Utils.getTimeAgo()
+
     }
 }
+
+
+
