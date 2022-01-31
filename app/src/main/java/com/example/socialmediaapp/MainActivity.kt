@@ -11,7 +11,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IPostAdapter {
 
     private lateinit var postDao: PostDao
     private lateinit var adapter: PostAdapter
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerViewOptions = FirestoreRecyclerOptions.Builder<Post>().setQuery(query,Post::class.java).build()
 
 
-        adapter = PostAdapter(recyclerViewOptions)
+        adapter = PostAdapter(recyclerViewOptions,this)
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(this)
     }
@@ -45,5 +45,9 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
+    }
+
+    override fun onLikeClicked(postId: String) {
+        postDao.updateLikes(postId)
     }
 }
